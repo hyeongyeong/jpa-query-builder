@@ -4,6 +4,7 @@ import org.h2.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,10 @@ public class ColumnFields {
     }
 
     private List<ColumnField> extract(Class<?> clazz) {
+        if(columnFields.stream().noneMatch(ColumnField::isPrimaryKey)) {
+            throw new IllegalArgumentException("Entity에 Id로 정의된 column이 존재하지 않습니다.");
+        }
+
         return Arrays.stream(clazz.getDeclaredFields())
                 .map(ColumnField::new)
                 .filter(ColumnField::isNotTransient)
@@ -23,7 +28,7 @@ public class ColumnFields {
     }
 
     public List<ColumnField> getColumnFields() {
-        return columnFields;
+        return Collections.unmodifiableList(columnFields);
     }
 
     public List<String> getDeclaredFieldNames() {
@@ -32,10 +37,6 @@ public class ColumnFields {
     }
 
     public List<ColumnField> getPrimary() {
-        if(columnFields.stream().noneMatch(ColumnField::isPrimaryKey)) {
-            throw new IllegalArgumentException("Entity에 Id로 정의된 column이 존재하지 않습니다.");
-        }
-
         return columnFields.stream().filter(ColumnField::isPrimaryKey).collect(Collectors.toList());
     }
 
