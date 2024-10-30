@@ -62,7 +62,7 @@ class QueryBuilderDMLTest {
     void generateInsertQuery() throws Exception {
 
         QueryBuilderDML insertQueryBuilderDML = QueryBuilderDML.getInstance();
-        String expected = "insert into users (id, nick_name, old, email) values (1, hyeongyeong, 30, kohy0329@naver.com)";
+        String expected = "insert into users (id, nick_name, old, email) values ('1', 'hyeongyeong', '30', 'kohy0329@naver.com')";
 
         DummyPerson person = getCustomPerson();
         assertThat(insertQueryBuilderDML.insert(person)).isEqualTo(expected);

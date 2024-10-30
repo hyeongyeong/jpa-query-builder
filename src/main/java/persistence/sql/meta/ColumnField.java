@@ -58,10 +58,6 @@ public class ColumnField {
         return !field.isAnnotationPresent(Transient.class);
     }
 
-    public String generateWhereClause(Object object) throws Exception {
-        field.setAccessible(true);
-        return String.format("%s=%s", getName(), field.get(object));
-    }
     public Field getField() {
         return field;
     }

@@ -50,17 +50,8 @@ public class QueryBuilderDML {
 
     private String whereClause(String selectQuery, Object object) {
         String whereQuery = "%s where %s";
-        List<ColumnField> primaryFields = new ColumnFields(object.getClass()).getPrimary();
 
-        String primaryWhereClause = primaryFields.stream().map(columnField -> {
-            try {
-                return columnField.generateWhereClause(object);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.joining(" and "));
-
-        return String.format(whereQuery, selectQuery, primaryWhereClause);
+        return String.format(whereQuery, selectQuery, new ColumnFields(object.getClass()).whereClauses(object));
     }
 
 }

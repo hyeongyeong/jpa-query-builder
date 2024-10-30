@@ -55,4 +55,17 @@ public class ColumnFields {
             }
         }).collect(Collectors.joining(", "));
     }
+
+    public String whereClauses(Object object) {
+        List<ColumnField> primaryFields = new ColumnFields(object.getClass()).getPrimary();
+
+        return primaryFields.stream().map(columnField -> {
+            try {
+                columnField.getField().setAccessible(true);
+                return String.format("%s=%s", columnField.getName(), columnField.getField().get(object));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.joining(" and "));
+    }
 }
