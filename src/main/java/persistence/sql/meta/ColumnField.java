@@ -37,7 +37,10 @@ public class ColumnField {
 
     public String getName(){
         final var columnAnnotation = field.getAnnotation(Column.class);
-        return Objects.isNull(columnAnnotation) || columnAnnotation.name().isBlank() ? field.getName() : columnAnnotation.name();
+        if(Objects.isNull(columnAnnotation) || columnAnnotation.name().isBlank()){
+            return field.getName();
+        }
+        return columnAnnotation.name();
     }
 
     public H2ColumnType getColumnType() {
