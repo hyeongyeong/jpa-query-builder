@@ -49,7 +49,7 @@ public class ColumnFields {
         fields.forEach(field -> field.setAccessible(true));
         return fields.stream().map(field-> {
             try {
-                return String.valueOf(field.get(object));
+                return String.format("\'%s\'", field.get(object));
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
